@@ -5,8 +5,8 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QFileDialog
 
 from client import TCPClient
-from view.login import Ui_Dialog
-from view.main import Ui_MainWindow
+from login import Ui_Dialog
+from main import Ui_MainWindow
 
 
 class EventHandler(object):
