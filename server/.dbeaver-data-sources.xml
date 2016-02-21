@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data-sources>
-	<data-source id="sqlite_jdbc-f9cd162c55-34e30849c47cca49" provider="generic" driver="sqlite_jdbc" name="SQLite - demo.db" create-date="1072887663703" update-date="1456068747750" save-password="true" show-system-objects="true" read-only="false">
+	<data-source id="sqlite_jdbc-1530478d3ce-731eef16afe1b58b" provider="generic" driver="sqlite_jdbc" name="SQLite - demo.db" create-date="1456068951843" save-password="true" show-system-objects="true" read-only="false">
 		<connection server="" database="E:\workspace\python\liwei_python\server\src\persistent\demo.db" url="jdbc:sqlite:E:\workspace\python\liwei_python\server\src\persistent\demo.db" user="" type="dev">
 			<bootstrap/>
 		</connection>
