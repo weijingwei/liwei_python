@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="sqlite_jdbc-f9cd162c55-34e30849c47cca49" provider="generic" driver="sqlite_jdbc" name="SQLite - demo.db" create-date="1072887663703" update-date="1455957560046" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="C:\Documents and Settings\Administrator\git\PYTHON_demo\demo\src\serverSide\persistent\demo.db" url="jdbc:sqlite:C:\Documents and Settings\Administrator\git\PYTHON_demo\demo\src\serverSide\persistent\demo.db" user="" type="dev">
+			<bootstrap/>
+		</connection>
+	</data-source>
+</data-sources>

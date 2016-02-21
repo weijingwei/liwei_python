@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="userList_table">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>781</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>name</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>password</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="btn_fileUpload">
+    <property name="geometry">
+     <rect>
+      <x>22</x>
+      <y>282</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>file upload</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_filesUpload">
+    <property name="geometry">
+     <rect>
+      <x>103</x>
+      <y>282</y>
+      <width>80</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>files upload</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_dirUpload">
+    <property name="geometry">
+     <rect>
+      <x>189</x>
+      <y>282</y>
+      <width>104</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>directory upload</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_fileDownload">
+    <property name="geometry">
+     <rect>
+      <x>299</x>
+      <y>282</y>
+      <width>86</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>file download</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOpen">
+    <property name="title">
+     <string>start</string>
+    </property>
+    <addaction name="actionLog_in"/>
+    <addaction name="separator"/>
+   </widget>
+   <addaction name="menuOpen"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLog_in">
+   <property name="text">
+    <string>log-in</string>
+   </property>
+  </action>
+  <action name="actionRegister">
+   <property name="text">
+    <string>register</string>
+   </property>
+  </action>
+  <action name="actionRegister_2">
+   <property name="text">
+    <string>register</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
