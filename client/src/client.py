@@ -23,6 +23,6 @@ class TCPClient(object):
         return result
     
 if __name__ == '__main__':
-    from controller import Controller
-    controller = Controller()
-    controller.openMainWindow()
+    from eventHandler import EventHandler
+    eventHandler = EventHandler()
+    eventHandler.openMainWindow()

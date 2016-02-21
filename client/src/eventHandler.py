@@ -9,7 +9,7 @@ from view.login import Ui_Dialog
 from view.main import Ui_MainWindow
 
 
-class Controller(object):
+class EventHandler(object):
     def openMainWindow(self):
         app = QtWidgets.QApplication(sys.argv)
         self.MainWindow = QtWidgets.QMainWindow()
