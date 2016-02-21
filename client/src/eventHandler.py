@@ -67,19 +67,26 @@ class EventHandler(object):
             print("Show user list table failed.", e)
     
     def createUserListTableRow(self, index, user):
+#         set table row count
         _translate = QtCore.QCoreApplication.translate
         self.ui_main.userList_table.setRowCount(index + 1)
-        item = QtWidgets.QTableWidgetItem()
-        self.ui_main.userList_table.setVerticalHeaderItem(index, item)
-        item = self.ui_main.userList_table.verticalHeaderItem(index)
-        item.setText(_translate("MainWindow", str(index + 1)))
+        
+#         set vertical item
+#         item = QtWidgets.QTableWidgetItem()
+#         self.ui_main.userList_table.setVerticalHeaderItem(index, item)
+#         item = self.ui_main.userList_table.verticalHeaderItem(index)
+#         item.setText(_translate("MainWindow", str(index)))
+
+#         set row item
         item = QtWidgets.QTableWidgetItem()
         self.ui_main.userList_table.setItem(index, 0, item)
-        item = self.ui_main.userList_table.item(index, 0)
+#         item = self.ui_main.userList_table.item(index, 0)
         item.setText(_translate("MainWindow", user[1]))
+        
+#         set row item
         item = QtWidgets.QTableWidgetItem()
         self.ui_main.userList_table.setItem(index, 1, item)
-        item = self.ui_main.userList_table.item(index, 1)
+#         item = self.ui_main.userList_table.item(index, 1)
         item.setText(_translate("MainWindow", user[2]))
         
     def selectUploadFile(self):
