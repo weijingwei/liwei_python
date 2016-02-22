@@ -1,4 +1,7 @@
+import os
 import sqlite3
+
+
 class DBUtils(object):
     CREATEDEMO = "CREATE TABLE demo (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, password TEXT)"
     DROPDEMO = "DROP TABLE demo"
@@ -8,7 +11,7 @@ class DBUtils(object):
     SELECTALLDEMO = "SELECT * FROM demo"
     
     def __init__(self):
-        self.conn = sqlite3.connect("persistent/demo.db")
+        self.conn = sqlite3.connect(os.path.realpath(".") + "/utils/demo.db")
         self.cursor = self.conn.cursor()
     
     def __del__(self):
