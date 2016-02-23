@@ -6,7 +6,7 @@ import sys, os
 sys.path.append(os.path.realpath(".."))
 class EchoRequestHandler(BaseRequestHandler):
     def handle(self):
-        from utils.dbUtils import DBUtils
+        from utils import Utils
         print("Got new connection!")
         while True:
             msg = self.request.recv(1024)
@@ -14,7 +14,7 @@ class EchoRequestHandler(BaseRequestHandler):
                 break
             msg = loads(msg)
             print("Received:", msg)
-            result = getattr(DBUtils(), msg[0])(msg[1])
+            result = getattr(Utils(), msg[0])(msg[1])
             print(result)
             self.request.send(dumps(result))
             print("Done with connection")

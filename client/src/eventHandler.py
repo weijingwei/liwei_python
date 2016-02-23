@@ -91,27 +91,32 @@ class EventHandler(object):
         
     def selectUploadFile(self):
         try:
-            fileName1, filetype = QFileDialog.getOpenFileName(self.MainWindow, "选取文件", os.path.realpath("."), "All Files (*);;Text Files (*.txt)")    #设置文件扩展名过滤,注意用双分号间隔  
+            fileName1, filetype = QFileDialog.getOpenFileName(self.MainWindow, "选取文件", os.path.realpath("/"), "All Files (*);;Text Files (*.log);;Text Files (*.txt)")    #设置文件扩展名过滤,注意用双分号间隔  
             print(fileName1, filetype)  
+            file = open(fileName1)
+            lines = file.readlines()
+            client = TCPClient()
+            for line in lines:
+                print(client.send(("analysisFile", (line, ))))
         except Exception as e:
             print(e)
     def selectUploadFiles(self):
         try:
-            files, ok1 = QFileDialog.getOpenFileNames(self.MainWindow, "多文件选择", os.path.realpath("."), "All Files (*);;Text Files (*.txt)")  
+            files, ok1 = QFileDialog.getOpenFileNames(self.MainWindow, "多文件选择", os.path.realpath("/"), "All Files (*);;Text Files (*.log);;Text Files (*.txt)")  
             print(files, ok1)  
         except Exception as e:
             print(e)
             
     def selectUploadDir(self):
         try:
-            directory1 = QFileDialog.getExistingDirectory(self.MainWindow, "选取文件夹", os.path.realpath(".")) #起始路径  
+            directory1 = QFileDialog.getExistingDirectory(self.MainWindow, "选取文件夹", os.path.realpath("/")) #起始路径  
             print(directory1)  
         except Exception as e:
             print(e)
     
     def selectFileDownload(self):
         try:
-            fileName2, ok2 = QFileDialog.getSaveFileName(self.MainWindow, "文件保存", os.path.realpath("."), "All Files (*);;Text Files (*.txt)")
+            fileName2, ok2 = QFileDialog.getSaveFileName(self.MainWindow, "文件保存", os.path.realpath("/"), "All Files (*);;Text Files (*.log);;Text Files (*.txt)")
             print(fileName2, ok2)
         except Exception as e:
             print(e)

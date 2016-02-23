@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 
-class DBUtils(object):
+class Utils(object):
     CREATEDEMO = "CREATE TABLE demo (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, password TEXT)"
     DROPDEMO = "DROP TABLE demo"
     INSERTDEMO = "INSERT INTO demo (name, password) VALUES (?, ?)"
@@ -11,7 +11,7 @@ class DBUtils(object):
     SELECTALLDEMO = "SELECT * FROM demo"
     
     def __init__(self):
-        self.conn = sqlite3.connect(os.path.realpath(".") + "/utils/demo.db")
+        self.conn = sqlite3.connect(os.path.realpath(".") + "/demo.db")
         self.cursor = self.conn.cursor()
     
     def __del__(self):
@@ -33,9 +33,9 @@ class DBUtils(object):
             self.conn.rollback()
             print("add user failed.", e)
      
-    def getUserByName(self, name):
+    def getUserByName(self, params):
         try:
-            self.cursor.execute(self.SELECTDEMO, name)
+            self.cursor.execute(self.SELECTDEMO, params)
             return self.cursor.fetchone()
         except Exception as e:
             print("get user by name failed.", e)
@@ -48,3 +48,7 @@ class DBUtils(object):
         except Exception as e:
             print("get all users failed.", e)
             return None
+        
+    def analysisFile(self, params):
+        print(params[0])
+        return params[0]
