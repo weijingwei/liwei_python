@@ -98,15 +98,13 @@ class EventHandler(object):
     def analysisFileCallBack(self, params):
         print(params)
     
-        
     def selectUploadFile(self):
         try:
-            fileName1, filetype = QFileDialog.getOpenFileName(self.MainWindow, "选取文件", os.path.realpath("/"), "All Files (*);;Text Files (*.log);;Text Files (*.txt)")    #设置文件扩展名过滤,注意用双分号间隔  
+            fileName1, filetype = QFileDialog.getOpenFileName(self.MainWindow, "选取文件", os.path.realpath("/"), "Log Files (*.log)")    #设置文件扩展名过滤,注意用双分号间隔  
             print(fileName1, filetype)  
             file = open(fileName1)
             lines = file.readlines()
             Thread(target=self.analysisFile, args=(lines,)).start()
-            
         except Exception as e:
             print(e)
             
