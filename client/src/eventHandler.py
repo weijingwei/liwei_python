@@ -1,5 +1,6 @@
 import os
 import sys
+from threading import Thread
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QFileDialog
@@ -89,17 +90,26 @@ class EventHandler(object):
 #         item = self.ui_main.userList_table.item(index, 1)
         item.setText(_translate("MainWindow", user[2]))
         
+    def analysisFile(self, lines):
+        client = TCPClient()
+        for line in lines:
+            client.send(("analysisFile", (line,)), self.analysisFileCallBack)
+            
+    def analysisFileCallBack(self, params):
+        print(params)
+    
+        
     def selectUploadFile(self):
         try:
             fileName1, filetype = QFileDialog.getOpenFileName(self.MainWindow, "选取文件", os.path.realpath("/"), "All Files (*);;Text Files (*.log);;Text Files (*.txt)")    #设置文件扩展名过滤,注意用双分号间隔  
             print(fileName1, filetype)  
             file = open(fileName1)
             lines = file.readlines()
-            client = TCPClient()
-            for line in lines:
-                print(client.send(("analysisFile", (line, ))))
+            Thread(target=self.analysisFile, args=(lines,)).start()
+            
         except Exception as e:
             print(e)
+            
     def selectUploadFiles(self):
         try:
             files, ok1 = QFileDialog.getOpenFileNames(self.MainWindow, "多文件选择", os.path.realpath("/"), "All Files (*);;Text Files (*.log);;Text Files (*.txt)")  

@@ -1,6 +1,7 @@
 from pickle import dumps, loads
 from socket import socket, AF_INET, SOCK_STREAM
 import sys, os
+from threading import Thread
 
 
 sys.path.append(os.path.realpath(".."))
@@ -17,9 +18,12 @@ class TCPClient(object):
     '''
     result = TCPClient().send(([DBUtils.method_name], 元祖类型作为sql参数))
     '''
-    def send(self, params):
+    def send(self, params, callback=None):
         self.s.send(dumps(params))
         result = loads(self.s.recv(1024))
+        if callback:
+            t = Thread(target=callback, args=(result,))
+            t.start()
         return result
     
 if __name__ == '__main__':
