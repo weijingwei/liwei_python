@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="sqlite_jdbc-1530de5bf89-1ec0b25c4cd5e96d" provider="generic" driver="sqlite_jdbc" name="SQLite - svrdata.db" create-date="1456227085036" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="E:\workspace\python\ASTM2\svrdata.db" url="jdbc:sqlite:E:\workspace\python\ASTM2\svrdata.db" user="" type="dev">
+			<bootstrap/>
+		</connection>
+		<virtual-meta-data>
+			<container name="model">
+				<entity name="testresult">
+					<constraint name="PRIMARY" type="VIRTUAL KEY">
+						<attribute name="sampleid"/>
+						<attribute name="testname"/>
+						<attribute name="testvalue"/>
+					</constraint>
+				</entity>
+			</container>
+		</virtual-meta-data>
+		<custom-property name="resultset.edit.key.use_all_columns" value="false"/>
+	</data-source>
+</data-sources>

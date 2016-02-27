@@ -52,3 +52,6 @@ class Utils(object):
     def analysisFile(self, params):
         print(params[0])
         return params[0]
+    
+    def testConn(self, params):
+        return "success"

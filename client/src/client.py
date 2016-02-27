@@ -22,6 +22,7 @@ class TCPClient(object):
         self.s.send(dumps(params))
         result = loads(self.s.recv(1024))
         if callback:
+#             callback(result)
             t = Thread(target=callback, args=(result,))
             t.start()
         return result

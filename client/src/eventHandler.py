@@ -104,6 +104,7 @@ class EventHandler(object):
             print(fileName1, filetype)  
             file = open(fileName1)
             lines = file.readlines()
+#             self.analysisFile(lines)
             Thread(target=self.analysisFile, args=(lines,)).start()
         except Exception as e:
             print(e)
