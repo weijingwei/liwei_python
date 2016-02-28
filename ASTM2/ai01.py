@@ -184,5 +184,10 @@ class AI01(object):
         c.execute('insert into sampleinfo values (?,?,?,?,?,?)', (params[0],params[1],params[2],params[3],params[4],params[5]))
         conn.commit()
         print('表[sampleinfo]数据写入成功!')
+        for test in params[6]:
+            c.execute('insert into testresult (sampleid, testname) values (?,?)', (params[0], test))
+            conn.commit()
+            print('表[testresult]数据写入成功!')
         conn.close()
+        print(self.selectData((params[0],)))
         return '表[sampleinfo]数据写入成功!, sid: ' + params[0]

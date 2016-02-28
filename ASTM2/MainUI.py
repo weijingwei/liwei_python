@@ -11,16 +11,20 @@ from PyQt5 import QtCore, QtWidgets
 from ASTM_ui import Ui_ASTM_Clent
 from client import TCPClient
 from server import EchoRequestHandler
+from ai01 import AI01
 
 
 class MainUI(Ui_ASTM_Clent):
     def _del_(self):
         if hasattr(self, "server"):
             self.server.shutdown()
+            self.server = None
+            self.t._stop()
             
     def searchClicked(self):
         sid = self.txtSearch.text()
-        TCPClient(self.sendIP, self.sendPort).send(("selectData", (sid,)), self.searchCallBack)
+        result = AI01().selectData((sid,))
+        self.searchCallBack(result)
         
     def testConnClicked(self):
         sendIP = self.txtSendIP.text()
@@ -40,13 +44,15 @@ class MainUI(Ui_ASTM_Clent):
     def listening(self):
         if hasattr(self, "server"):
             self.server.shutdown()
+            self.server = None
+            self.t._stop()
         listenIP = self.txtLocalIP.text()
         listenPort = self.txtLocalPort.text()
         self.server = ThreadingTCPServer((listenIP, int(listenPort)), EchoRequestHandler)
         print("server running at", listenIP, listenPort)
         self.txtConsole.append("server running at " + listenIP + " " + listenPort)
-        t = Thread(target=self.server.serve_forever)
-        t.start()
+        self.t = Thread(target=self.server.serve_forever)
+        self.t.start()
     
     def connClicked(self):
         sendIP = self.txtSendIP.text()
@@ -132,11 +138,15 @@ class MainUI(Ui_ASTM_Clent):
             self.txtConsole.append("please a test at least.")
             return
         params = (sid, pid, pname, page, pgender, status, testnames)
-        TCPClient(self.sendIP, self.sendPort).send(("orderEntry", params), self.orderEntryCallBack)
+        result = AI01().orderEntry(params)
+        self.orderEntryCallBack(result)
         
     def orderEntryCallBack(self, params):
         print(params)
         self.txtConsole.append(params)
+#         transform data
+
+#         TCPClient(self.sendIP, self.sendPort).send(("orderEntry", params), self.orderEntryCallBack)
         
     def searchCallBack(self, params):
         print(params)
@@ -173,6 +183,12 @@ class MainUI(Ui_ASTM_Clent):
                 item.setText(param[2])
             index += 1
             
+    def closeWindown(self):
+        if hasattr(self, "server"):
+            self.server.shutdown()
+            self.server = None
+            self.t.stop()
+            
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -184,5 +200,6 @@ if __name__ == "__main__":
     ui.btn_conn.clicked.connect(ui.connClicked)
     ui.btn_listen.clicked.connect(ui.listening)
     ui.OrderBut.clicked.connect(ui.orderButClicked)
+    ASTM_Clent.destroyed.connect(ui.closeWindown)
     ASTM_Clent.show()
     sys.exit(app.exec_())
