@@ -9,6 +9,7 @@ from threading import Thread
 from PyQt5 import QtCore, QtWidgets
 
 from ASTM_ui import Ui_ASTM_Clent
+from Operation_db import OperationDB
 from client import TCPClient
 from server import EchoRequestHandler
 
@@ -17,10 +18,14 @@ class MainUI(Ui_ASTM_Clent):
     def _del_(self):
         if hasattr(self, "server"):
             self.server.shutdown()
+            self.server = None
+            self.t._stop()
             
     def searchClicked(self):
         sid = self.txtSearch.text()
-        TCPClient(self.sendIP, self.sendPort).send(("selectData", (sid,)), self.searchCallBack)
+        result = OperationDB().selectTest((sid,))
+        print(result)
+        self.searchCallBack(result)
         
     def testConnClicked(self):
         sendIP = self.txtSendIP.text()
@@ -40,13 +45,19 @@ class MainUI(Ui_ASTM_Clent):
     def listening(self):
         if hasattr(self, "server"):
             self.server.shutdown()
+            self.server = None
+            self.t._stop()
         listenIP = self.txtLocalIP.text()
         listenPort = self.txtLocalPort.text()
-        self.server = ThreadingTCPServer((listenIP, int(listenPort)), EchoRequestHandler)
-        print("server running at", listenIP, listenPort)
-        self.txtConsole.append("server running at " + listenIP + " " + listenPort)
-        t = Thread(target=self.server.serve_forever)
-        t.start()
+        try:
+            self.server = ThreadingTCPServer((listenIP, int(listenPort)), EchoRequestHandler)
+            print("server running at", listenIP, listenPort)
+            self.txtConsole.append("server running at " + listenIP + " " + listenPort)
+            self.t = Thread(target=self.server.serve_forever)
+            self.t.start()
+        except Exception as e:
+            print(e)
+            self.txtConsole.append(str(e))
     
     def connClicked(self):
         sendIP = self.txtSendIP.text()
@@ -132,46 +143,57 @@ class MainUI(Ui_ASTM_Clent):
             self.txtConsole.append("please a test at least.")
             return
         params = (sid, pid, pname, page, pgender, status, testnames)
-        TCPClient(self.sendIP, self.sendPort).send(("orderEntry", params), self.orderEntryCallBack)
+        result = OperationDB().orderEntry(params)
+        self.orderEntryCallBack(result)
         
     def orderEntryCallBack(self, params):
         print(params)
         self.txtConsole.append(params)
+#         transform data
+
+#         TCPClient(self.sendIP, self.sendPort).send(("orderEntry", params), self.orderEntryCallBack)
         
     def searchCallBack(self, params):
         print(params)
         index = 0
         for param in params:
-            _translate = QtCore.QCoreApplication.translate
-            self.table_test.setRowCount(index + 1)
-            if param[0] == "P":
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 1, item)
-                item.setText(param[1])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 2, item)
-                item.setText(param[2])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 3, item)
-                item.setText(param[3])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 4, item)
-                item.setText(param[4])
-            elif param[0] == "O":
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 0, item)
-                item.setText(param[1])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 5, item)
-                item.setText(param[2])
-            elif param[0] == "R":
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 6, item)
-                item.setText(param[1])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 7, item)
-                item.setText(param[2])
-            index += 1
+            if not param is None:
+                _translate = QtCore.QCoreApplication.translate
+                self.table_test.setRowCount(index + 1)
+                if param[0] == "P":
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 1, item)
+                    item.setText(param[1])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 2, item)
+                    item.setText(param[2])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 3, item)
+                    item.setText(param[3])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 4, item)
+                    item.setText(param[4])
+                elif param[0] == "O":
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 0, item)
+                    item.setText(param[1])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 5, item)
+                    item.setText(param[2])
+                elif param[0] == "R":
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 6, item)
+                    item.setText(param[1])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 7, item)
+                    item.setText(param[2])
+                index += 1
+        
+    def closeWindown(self):
+        if hasattr(self, "server"):
+            self.server.shutdown()
+            self.server = None
+            self.t.stop()
             
 if __name__ == "__main__":
     import sys
@@ -184,5 +206,6 @@ if __name__ == "__main__":
     ui.btn_conn.clicked.connect(ui.connClicked)
     ui.btn_listen.clicked.connect(ui.listening)
     ui.OrderBut.clicked.connect(ui.orderButClicked)
+    ASTM_Clent.destroyed.connect(ui.closeWindown)
     ASTM_Clent.show()
     sys.exit(app.exec_())

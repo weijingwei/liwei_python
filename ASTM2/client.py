@@ -1,7 +1,6 @@
 from pickle import dumps, loads
 from socket import socket, AF_INET, SOCK_STREAM
 import sys, os
-from threading import Thread
 
 
 sys.path.append(os.path.realpath(".."))
@@ -26,6 +25,4 @@ class TCPClient(object):
             result = loads(self.s.recv(1024))
             if callback:
                 callback(result)
-#                 t = Thread(target=callback, args=(result,))
-#                 t.start()
             return result

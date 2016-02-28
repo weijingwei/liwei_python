@@ -1,7 +1,7 @@
-from ai01 import AI01
 from pickle import loads, dumps
 from socketserver import BaseRequestHandler, ThreadingTCPServer
 import sys, os
+from Operation_db import OperationDB
 
 
 sys.path.append(os.path.realpath(".."))
@@ -14,7 +14,7 @@ class EchoRequestHandler(BaseRequestHandler):
                 break
             msg = loads(msg)
             print("Received:", msg)
-            result = getattr(AI01(), msg[0])(msg[1])
+            result = getattr(OperationDB(), msg[0])(msg[1])
             print(result)
             self.request.send(dumps(result))
             print("Done with connection")

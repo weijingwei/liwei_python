@@ -171,14 +171,12 @@ class AI01(object):
         cursor.execute("select 'R' as R,testname,testvalue from testresult  where sampleid =?", sid)
         result += tuple(cursor.fetchall())
         cursor.close()
-        get_conn().close()
         return result
     
     def testConn(self, params):
         return "success"
     
     def orderEntry(self, params):
-        print(params)
         conn = get_conn()
         c = conn.cursor()
         c.execute('insert into sampleinfo values (?,?,?,?,?,?)', (params[0],params[1],params[2],params[3],params[4],params[5]))
@@ -189,5 +187,5 @@ class AI01(object):
             conn.commit()
             print('表[testresult]数据写入成功!')
         conn.close()
-        print(self.selectData((params[0],)))
-        return '表[sampleinfo]数据写入成功!, sid: ' + params[0]
+        test = self.selectData((params[0],))
+        return '数据写入成功!, sid: ' + test

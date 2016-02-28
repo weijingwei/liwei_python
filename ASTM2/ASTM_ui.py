@@ -63,6 +63,7 @@ class Ui_ASTM_Clent(object):
         self.table_test.setObjectName("table_test")
         self.table_test.setColumnCount(8)
         self.table_test.setRowCount(0)
+#         item = self.table_test.item
         item = QtWidgets.QTableWidgetItem()
         self.table_test.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()

@@ -9,9 +9,9 @@ from threading import Thread
 from PyQt5 import QtCore, QtWidgets
 
 from ASTM_ui import Ui_ASTM_Clent
+from Operation_db import OperationDB
 from client import TCPClient
 from server import EchoRequestHandler
-from ai01 import AI01
 
 
 class MainUI(Ui_ASTM_Clent):
@@ -23,7 +23,8 @@ class MainUI(Ui_ASTM_Clent):
             
     def searchClicked(self):
         sid = self.txtSearch.text()
-        result = AI01().selectData((sid,))
+        result = OperationDB().selectTest((sid,))
+        print(result)
         self.searchCallBack(result)
         
     def testConnClicked(self):
@@ -48,11 +49,15 @@ class MainUI(Ui_ASTM_Clent):
             self.t._stop()
         listenIP = self.txtLocalIP.text()
         listenPort = self.txtLocalPort.text()
-        self.server = ThreadingTCPServer((listenIP, int(listenPort)), EchoRequestHandler)
-        print("server running at", listenIP, listenPort)
-        self.txtConsole.append("server running at " + listenIP + " " + listenPort)
-        self.t = Thread(target=self.server.serve_forever)
-        self.t.start()
+        try:
+            self.server = ThreadingTCPServer((listenIP, int(listenPort)), EchoRequestHandler)
+            print("server running at", listenIP, listenPort)
+            self.txtConsole.append("server running at " + listenIP + " " + listenPort)
+            self.t = Thread(target=self.server.serve_forever)
+            self.t.start()
+        except Exception as e:
+            print(e)
+            self.txtConsole.append(str(e))
     
     def connClicked(self):
         sendIP = self.txtSendIP.text()
@@ -138,7 +143,7 @@ class MainUI(Ui_ASTM_Clent):
             self.txtConsole.append("please a test at least.")
             return
         params = (sid, pid, pname, page, pgender, status, testnames)
-        result = AI01().orderEntry(params)
+        result = OperationDB().orderEntry(params)
         self.orderEntryCallBack(result)
         
     def orderEntryCallBack(self, params):
@@ -152,37 +157,38 @@ class MainUI(Ui_ASTM_Clent):
         print(params)
         index = 0
         for param in params:
-            _translate = QtCore.QCoreApplication.translate
-            self.table_test.setRowCount(index + 1)
-            if param[0] == "P":
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 1, item)
-                item.setText(param[1])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 2, item)
-                item.setText(param[2])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 3, item)
-                item.setText(param[3])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 4, item)
-                item.setText(param[4])
-            elif param[0] == "O":
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 0, item)
-                item.setText(param[1])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 5, item)
-                item.setText(param[2])
-            elif param[0] == "R":
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 6, item)
-                item.setText(param[1])
-                item = QtWidgets.QTableWidgetItem()
-                self.table_test.setItem(index, 7, item)
-                item.setText(param[2])
-            index += 1
-            
+            if not param is None:
+                _translate = QtCore.QCoreApplication.translate
+                self.table_test.setRowCount(index + 1)
+                if param[0] == "P":
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 1, item)
+                    item.setText(param[1])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 2, item)
+                    item.setText(param[2])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 3, item)
+                    item.setText(param[3])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 4, item)
+                    item.setText(param[4])
+                elif param[0] == "O":
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 0, item)
+                    item.setText(param[1])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 5, item)
+                    item.setText(param[2])
+                elif param[0] == "R":
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 6, item)
+                    item.setText(param[1])
+                    item = QtWidgets.QTableWidgetItem()
+                    self.table_test.setItem(index, 7, item)
+                    item.setText(param[2])
+                index += 1
+        
     def closeWindown(self):
         if hasattr(self, "server"):
             self.server.shutdown()
